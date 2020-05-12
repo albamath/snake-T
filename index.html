@@ -44,7 +44,10 @@
           snakeX += nextX;
           // snake over game world?
           if (snakeX < 0) {
-              snakeX = gridSize - 1;
+            snakeX = gridSize - 1;
+            if (snakeY < halfGridSize) {
+              snakeX -= halfGridSize;
+            }
           }  
           if (snakeX > halfGridSize - 1) {
             if (snakeY < halfGridSize) {
