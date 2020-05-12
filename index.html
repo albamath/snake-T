@@ -18,44 +18,62 @@
 
         document.addEventListener("keydown", keyDownEvent);
 
-        // render X times per second
-        var x = 8;
-        setInterval(draw, 1000 / x);
+        // render fr times per second
+        var f = 8;
+        setInterval(draw, 1000 / f);
       };
 
       // game world
-      var gridSize = (tileSize = 20); // 20 x 20 = 400
+      var gridSize = 2*(halfGridSize = 10); // 20 x 20 - 10 x 10 = 300
+      var tileSize = 20;
       var nextX = (nextY = 0);
 
       // snake
       var defaultTailSize = 3;
       var tailSize = defaultTailSize;
       var snakeTrail = [];
-      var snakeX = (snakeY = 10);
+      var snakeY = halfGridSize + (snakeX = Math.floor(halfGridSize/2));
 
       // apple
       var appleX = (appleY = 15);
 
       // draw
       function draw() {
-        // move snake in next pos
-        snakeX += nextX;
-        snakeY += nextY;
-
-        // snake over game world?
-        if (snakeX < 0) {
-          snakeX = gridSize - 1;
+        // move snake in next pos along X
+        if (nextX != 0) {
+          snakeX += nextX;
+          // snake over game world?
+          if (snakeX < 0) {
+              snakeX = gridSize - 1;
+          }  
+          if (snakeX > halfGridSize - 1) {
+            if (snakeY < halfGridSize) {
+              snakeX = 0;
+            }
+          }          
+          if (snakeX > gridSize - 1) {
+            snakeX = 0;
+          }
         }
-        if (snakeX > gridSize - 1) {
-          snakeX = 0;
-        }
-
-        if (snakeY < 0) {
-          snakeY = gridSize - 1;
-        }
-        if (snakeY > gridSize - 1) {
-          snakeY = 0;
-        }
+        // move snake in next pos along Y
+        if (nextY != 0) {
+          snakeY += nextY;
+          // snake over game world?
+          if (snakeY < 0) {
+            snakeY = gridSize - 1;
+          }  
+          if (snakeY < halfGridSize) {
+            if (snakeX > halfGridSize - 1) {
+              snakeY = gridSize - 1;
+            }
+          }
+          if (snakeY > gridSize - 1) {
+            snakeY = 0;
+            if (snakeX > halfGridSize - 1) {
+              snakeY = halfGridSize;
+            }
+          }
+        }  
 
         //snake bite apple?
         if (snakeX == appleX && snakeY == appleY) {
@@ -63,11 +81,20 @@
 
           appleX = Math.floor(Math.random() * gridSize);
           appleY = Math.floor(Math.random() * gridSize);
+          // apple over game world?
+          if (appleX > halfGridSize - 1) {
+            if (appleY < halfGridSize) {
+              appleX = Math.floor(appleX/2)
+              appleY = halfGridSize + Math.floor(appleY/2)
+            }
+          }
         }
 
         //paint background
         ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, halfGridSize*tileSize, gridSize*tileSize);    
+        ctx.fillRect(halfGridSize*tileSize, halfGridSize*tileSize, halfGridSize*tileSize, halfGridSize*tileSize);
+        
 
         // paint snake
         ctx.fillStyle = "green";
