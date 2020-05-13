@@ -166,15 +166,17 @@
             nextX = 0;
             nextY = Math.sign(diffY);
           }
-          output.innerHTML = "Relative touch: "
-                             +  " x: " + diffX/tileSize 
-                             + ", y: " + diffY/tileSize;
+          //// Uncomment for touch debugging
+          //output.innerHTML = "Rel. touch: "
+          //                   +  " x: " + Math.ceil(diffX/tileSize) 
+          //                   + ", y: " + Math.ceil(diffY/tileSize);
           e.preventDefault();
         }
       }
     </script>
-    
-    <div id = "output"></div>
+
+<!-- Uncomment the following line to show controls debugging output -->
+<!--    <div id = "output"></div> -->
     
   </body>
 </html>
