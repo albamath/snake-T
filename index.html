@@ -159,11 +159,11 @@
           return;
         }
         if (Math.abs(diffX) > Math.abs(diffY)) {
-          nextX = diffX/Math.abs(diffX);
+          nextX = Math.sign(diffX);
           nextY = 0;
         } else if (Math.abs(diffX) < Math.abs(diffY)) {
           nextX = 0;
-          nextY = diffY/Math.abs(diffY);
+          nextY = Math.sign(diffY);
         }
       }
     </script>
