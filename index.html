@@ -17,6 +17,8 @@
         ctx = canvas.getContext("2d");
 
         document.addEventListener("keydown", keyDownEvent);
+        document.addEventListener("touchstart", touchEvent);
+        document.addEventListener("touchmove", touchEvent);
 
         // render fr times per second
         var f = 8;
@@ -27,6 +29,7 @@
       var gridSize = 2*(halfGridSize = 10); // 20 x 20 - 10 x 10 = 300
       var tileSize = 20;
       var nextX = (nextY = 0);
+      var diffX = (diffY = 0);
 
       // snake
       var defaultTailSize = 3;
@@ -126,7 +129,7 @@
         }
       }
 
-      // input
+      // keyboard input
       function keyDownEvent(e) {
         switch (e.keyCode) {
           case 37:
@@ -145,6 +148,22 @@
             nextX = 0;
             nextY = 1;
             break;
+        }
+      }
+      
+      // touch input
+      function touchEvent(e) {
+        diffX = e.touches[0].pageX - snakeX;
+        diffY = e.touches[0].pageY - snakeY;
+        if (diffX == 0 && diffY == 0) {
+          return;
+        }
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          nextX = diffX/Math.abs(diffX);
+          nextY = 0;
+        } else if (Math.abs(diffX) < Math.abs(diffY)) {
+          nextX = 0;
+          nextY = diffY/Math.abs(diffY);
         }
       }
     </script>
