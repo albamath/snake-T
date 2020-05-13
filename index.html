@@ -154,19 +154,22 @@
       
       // touch input
       function touchEvent(e) {
-        diffX = e.touches[0].clientX - rect.left - snakeX;
-        diffY = e.touches[0].clientY - rect.top - snakeY;
-        if (diffX == 0 && diffY == 0) {
-          return;
+        if (e.touches) {
+          diffX = e.touches[0].pageX - rect.left - snakeX;
+          diffY = e.touches[0].pageY - rect.top  - snakeY;
+          if (diffX == 0 && diffY == 0) {
+            return;
+          }
+          if (Math.abs(diffX) > Math.abs(diffY)) {
+            nextX = Math.sign(diffX);
+            nextY = 0;
+          } else if (Math.abs(diffX) < Math.abs(diffY)) {
+            nextX = 0;
+            nextY = Math.sign(diffY);
+          }
+          output.innerHTML = "Touch: "+ " x: " + diffX + ", y: " + diffY;
+          e.preventDefault();
         }
-        if (Math.abs(diffX) > Math.abs(diffY)) {
-          nextX = Math.sign(diffX);
-          nextY = 0;
-        } else if (Math.abs(diffX) < Math.abs(diffY)) {
-          nextX = 0;
-          nextY = Math.sign(diffY);
-        }
-        e.preventDefault();
       }
     </script>
   </body>
