@@ -26,7 +26,7 @@
       };
 
       // game world
-      var gridSize = 2*(halfGridSize = 9); // 18 x 18 - 9 x 9 = 300
+      var gridSize = 2*(halfGridSize = 9); // 18 x 18 - 9 x 9
       var tileSize = 20;
       var nextX = (nextY = 0);
       var diffX = (diffY = 0);
@@ -133,20 +133,28 @@
       function keyDownEvent(e) {
         switch (e.keyCode) {
           case 37:
-            nextX = -1;
-            nextY = 0;
+            if (nextX != 1) {
+              nextX = -1; 
+              nextY = 0;
+            }
             break;
           case 38:
-            nextX = 0;
-            nextY = -1;
+            if (nextY != 1) {
+              nextX = 0;
+              nextY = -1;
+            }
             break;
           case 39:
-            nextX = 1;
-            nextY = 0;
+            if (nextX != -1) {
+              nextX = 1;
+              nextY = 0;
+            }
             break;
           case 40:
-            nextX = 0;
-            nextY = 1;
+            if (nextY != -1) {
+              nextX = 0;
+              nextY = 1;
+            }
             break;
         }
       }
@@ -159,10 +167,12 @@
           if (diffX == 0 && diffY == 0) {
             return;
           }
-          if (Math.abs(diffX) > Math.abs(diffY)) {
+          if (Math.abs(diffX) > Math.abs(diffY) 
+              && nextX + Math.sign(diffX) != 0) {
             nextX = Math.sign(diffX);
             nextY = 0;
-          } else if (Math.abs(diffX) < Math.abs(diffY)) {
+          } else if (Math.abs(diffX) < Math.abs(diffY) 
+                     && nextY + Math.sign(diffY) != 0) {
             nextX = 0;
             nextY = Math.sign(diffY);
           }
