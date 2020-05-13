@@ -154,8 +154,8 @@
       // touch input
       function touchEvent(e) {
         if (e.touches) {
-          diffX = e.touches[0].pageX - canvas.offsetLeft - snakeX;
-          diffY = e.touches[0].pageY - canvas.offsetTop  - snakeY;
+          diffX = e.touches[0].pageX - canvas.offsetLeft - snakeX*tileSize;
+          diffY = e.touches[0].pageY - canvas.offsetTop  - snakeY*tileSize;
           if (diffX == 0 && diffY == 0) {
             return;
           }
@@ -166,7 +166,9 @@
             nextX = 0;
             nextY = Math.sign(diffY);
           }
-          output.innerHTML = "Relative touch: "+ " x: " + diffX + ", y: " + diffY;
+          output.innerHTML = "Relative touch: "
+                             +  " x: " + diffX/tileSize 
+                             + ", y: " + diffY/tileSize;
           e.preventDefault();
         }
       }
