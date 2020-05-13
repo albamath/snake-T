@@ -10,12 +10,11 @@
     <canvas id="canvas" width="400" height="400"></canvas>
 
     <script>
-      var canvas, ctx, rect;
+      var canvas, ctx;
 
       window.onload = function() {
         canvas = document.getElementById("canvas");
         ctx = canvas.getContext("2d");
-        rect = canvas.getBoundingClientRect();
 
         document.addEventListener("keydown", keyDownEvent);
         document.addEventListener("touchstart", touchEvent);
@@ -155,8 +154,8 @@
       // touch input
       function touchEvent(e) {
         if (e.touches) {
-          diffX = e.touches[0].pageX - rect.left - snakeX;
-          diffY = e.touches[0].pageY - rect.top  - snakeY;
+          diffX = e.touches[0].pageX - canvas.offsetLeft - snakeX;
+          diffY = e.touches[0].pageY - canvas.offsetTop  - snakeY;
           if (diffX == 0 && diffY == 0) {
             return;
           }
@@ -167,10 +166,13 @@
             nextX = 0;
             nextY = Math.sign(diffY);
           }
-          output.innerHTML = "Touch: "+ " x: " + diffX + ", y: " + diffY;
+          output.innerHTML = "Relative touch: "+ " x: " + diffX + ", y: " + diffY;
           e.preventDefault();
         }
       }
     </script>
+    
+    <div id = "output"></div>
+    
   </body>
 </html>
