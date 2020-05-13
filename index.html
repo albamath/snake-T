@@ -10,11 +10,12 @@
     <canvas id="canvas" width="400" height="400"></canvas>
 
     <script>
-      var canvas, ctx;
+      var canvas, ctx, rect;
 
       window.onload = function() {
         canvas = document.getElementById("canvas");
         ctx = canvas.getContext("2d");
+        rect = canvas.getBoundingClientRect();
 
         document.addEventListener("keydown", keyDownEvent);
         document.addEventListener("touchstart", touchEvent);
@@ -153,8 +154,8 @@
       
       // touch input
       function touchEvent(e) {
-        diffX = e.touches[0].pageX - snakeX;
-        diffY = e.touches[0].pageY - snakeY;
+        diffX = e.touches[0].clientX - rect.left - snakeX;
+        diffY = e.touches[0].clientY - rect.top - snakeY;
         if (diffX == 0 && diffY == 0) {
           return;
         }
