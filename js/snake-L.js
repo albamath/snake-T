@@ -22,8 +22,8 @@
       };
 
       // game world
-      var gridSize = 2*(halfGridSize = 9); // 18 x 18 - 9 x 9
-      var tileSize = 20;
+      var gridSize = 2*(halfGridSize = 10); // 20 x 20 - 10 x 10
+      var tileSize = 18;
       var nextX = (nextY = 0);
       var diffX = (diffY = 0);
 
@@ -34,7 +34,7 @@
       var snakeY = halfGridSize + (snakeX = Math.floor(halfGridSize/2));
 
       // apple
-      var appleX = (appleY = 15);
+      var appleX = (appleY = 13);
 
       // draw
       function draw() {
