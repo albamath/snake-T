@@ -1,10 +1,10 @@
 // Snake in pure js. Simple as it gets. 
-// But in a "cross view" of an L translation 
-// surface instead of a "square view" of a flat 
-// torus. Duplicated from snake-L.js which was 
-// forked from zprima/snake-js-game, adapted by 
-// myself. Just run a server or test it at 
-// http://albamath.com/snake-X.
+// But in an L translation surface 
+// instead of a flat torus. 
+// Forked from zprima/snake-js-game, 
+// then duplicated and adapted by myself. 
+// Just run a server or test it at 
+// http://albamath.com/snake-L.
 
       var canvas, ctx;
 
@@ -22,21 +22,19 @@
       };
 
       // game world
-      var gridSize = 2*(halfGridSize = 2*(quartGridSize = 5)); // 20 x 20 - 4 x 5 x 5
-      var tileSize = 18;
+      var gridSize = 2*(halfGridSize = 9); // 18 x 18 - 9 x 9
+      var tileSize = 20;
       var nextX = (nextY = 0);
       var diffX = (diffY = 0);
-      var cX = (cY = 0);
 
       // snake
       var defaultTailSize = 3;
       var tailSize = defaultTailSize;
       var snakeTrail = [];
-      var snakeY = (snakeX = halfGridSize);
+      var snakeY = halfGridSize + (snakeX = Math.floor(halfGridSize/2));
 
       // apple
-      var appleX = 18;
-      var appleY = 8;
+      var appleX = (appleY = 15);
 
       // draw
       function draw() {
@@ -46,23 +44,17 @@
           // snake over game world?
           if (snakeX < 0) {
             snakeX = gridSize - 1;
+            if (snakeY < halfGridSize) {
+              snakeX -= halfGridSize;
+            }
+          }  
+          if (snakeX > halfGridSize - 1) {
+            if (snakeY < halfGridSize) {
+              snakeX = 0;
+            }
           }          
-          if (snakeX >= gridSize) {
+          if (snakeX > gridSize - 1) {
             snakeX = 0;
-          }
-          cX = snakeX - halfGridSize;
-          if (   (cX < -quartGridSize
-               || cX >= quartGridSize)
-              && (cY < -quartGridSize
-               || cY >= quartGridSize)
-             ) {
-            if (snakeX < quartGridSize) {
-              snakeX = 3*quartGridSize - 1;
-            }
-            if (snakeX >= 3*quartGridSize ) {
-              snakeX = quartGridSize;
-            }
-            cX = snakeX - halfGridSize;
           }
         }
         // move snake in next pos along Y
@@ -72,54 +64,39 @@
           if (snakeY < 0) {
             snakeY = gridSize - 1;
           }  
-          if (snakeY >= gridSize) {
-            snakeY = 0;
+          if (snakeY < halfGridSize) {
+            if (snakeX > halfGridSize - 1) {
+              snakeY = gridSize - 1;
+            }
           }
-          cY = snakeY - halfGridSize;
-          if (   (cX < -quartGridSize
-               || cX >= quartGridSize)
-              && (cY < -quartGridSize
-               || cY >= quartGridSize)) {
-            if (snakeY < quartGridSize) {
-              snakeY = 3*quartGridSize - 1;
+          if (snakeY > gridSize - 1) {
+            snakeY = 0;
+            if (snakeX > halfGridSize - 1) {
+              snakeY = halfGridSize;
             }
-            if (snakeY >= 3*quartGridSize) { 
-              snakeY = quartGridSize;
-            }
-            cY = snakeY - halfGridSize;
           }
         }  
 
         //snake bite apple?
         if (snakeX == appleX && snakeY == appleY) {
           tailSize++;
-          
-          // apple initially random at the central piece
-          appleX = quartGridSize + Math.floor(Math.random() * halfGridSize);
-          appleY = quartGridSize + Math.floor(Math.random() * halfGridSize);
-          // then displace to the side pieces 
-          // (the central region remains twice as likely though)
-          if (Math.floor(2*Math.random()) == 1) {
-            if (Math.floor(2*Math.random()) == 1) {
-              appleX += quartGridSize
-            } else {
-              appleX -= quartGridSize
-            }
-          } else {
-            if (Math.floor(2*Math.random()) == 1) {
-              appleY += quartGridSize
-            } else {
-              appleY -= quartGridSize
+
+          appleX = Math.floor(Math.random() * gridSize);
+          appleY = Math.floor(Math.random() * gridSize);
+          // apple over game world?
+          if (appleX > halfGridSize - 1) {
+            if (appleY < halfGridSize) {
+              appleX = Math.floor(appleX/2)
+              appleY = halfGridSize + Math.floor(appleY/2)
             }
           }
         }
 
         //paint background
         ctx.fillStyle = "black";
-        ctx.fillRect(quartGridSize*tileSize, 0, halfGridSize*tileSize, gridSize*tileSize);  
-        ctx.fillRect(0, quartGridSize*tileSize, quartGridSize*tileSize, halfGridSize*tileSize);  
-        ctx.fillRect(3*quartGridSize*tileSize, quartGridSize*tileSize, quartGridSize*tileSize, halfGridSize*tileSize);
-       
+        ctx.fillRect(0, 0, halfGridSize*tileSize, gridSize*tileSize);    
+        ctx.fillRect(halfGridSize*tileSize, halfGridSize*tileSize, halfGridSize*tileSize, halfGridSize*tileSize);
+        
 
         // paint snake
         ctx.fillStyle = "green";
