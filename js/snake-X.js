@@ -35,8 +35,8 @@
       var snakeY = (snakeX = halfGridSize);
 
       // apple
-      var appleX = 18;
-      var appleY = 8;
+      var appleX = 19;
+      var appleY = 9;
 
       // draw
       function draw() {
